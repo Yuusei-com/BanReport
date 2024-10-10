@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minecraft Ban 異議申し立てフォーム</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      color: white;
+    }
+    .form-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      color: #333;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+    .form-container h2 {
+      text-align: center;
+    }
+    .form-container input, .form-container textarea, .form-container button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    .form-container button {
+      background-color: #333;
+      color: white;
+      border: none;
+    }
+    .form-container button:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+
+<div class="form-container">
+  <h2>Ban異議申し立てフォーム</h2>
+  <form id="appeal-form">
+    <input type="text" id="player-name" placeholder="プレイヤー名" required>
+    <input type="text" id="ban-reason" placeholder="Ban理由" required>
+    <input type="email" id="email" placeholder="メールアドレス" required>
+    <input type="number" id="Cord" placeholder="Banコード" required>
+    <textarea id="appeal-message" placeholder="異議内容" rows="5" required></textarea>
+    <button type="submit">送信</button>
+  </form>
+  <p id="response" style="display:none;">異議申し立てが送信されました。管理者が確認します。</p>
+</div>
+
+<script>
+document.getElementById('appeal-form').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const playerName = document.getElementById('player-name').value;
+  const banReason = document.getElementById('ban-reason').value;
+  const email = document.getElementById('email').value;
+  const Cord = document.getElementById('Cord').value;
+  const appealMessage = document.getElementById('appeal-message').value;
+
+  const webhookURL = 'https://discord.com/api/webhooks/1293874288063025226/1N5VTg8ZmD-kBjV8sZ1wNGbWDy8JEzvhzyGBglMRcbx0ayg_CMea3MpJrO8qxTaLg9TL'; // 自分のWebhook URLに置き換えてください
+
+  const payload = {
+    content: `**Ban異議申し立てがありました**\n**プレイヤー名:** ${playerName}\n**Ban理由:** ${banReason}\n**異議内容:** ${appealMessage}\n**Email**: ${email}\n**BanCord** ${Cord}`
+  };
+
+  fetch(webhookURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(response => {
+    if (response.ok) {
+      document.getElementById('response').style.display = 'block';
+    } else {
+      alert('エラーが発生しました。もう一度お試しください。');
+    }
+  })
+  .catch(error => {
+    console.error('エラー:', error);
+  });
+});
+</script>
+
+</body>
+</html>
